@@ -2,5 +2,18 @@ sudo: required
 
 language: go
 
+go:
+  - 1.9.2
+
+before_install:
+  - go get -u github.com/golang/dep/cmd/dep
+  - dep ensure
+
+install:
+  - sudo docker build -t test/build .
+
 script:
-  - echo "skip tests"
+  - go test ./... -v 3
+
+deploy:
+    # todo: IMPLEMENT
