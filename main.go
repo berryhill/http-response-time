@@ -27,16 +27,31 @@ func main() {
 		}
 	}()
 
+	responseTime := make(chan float64, 1)
+	err := make(chan error, 1)
+
 	for {
-		responseTime, err := clients.GetGitlabRequestResponseTime()
-		if err != nil {
-			panic(err)
-		}
+		go makeRequests(responseTime, err)
+
+		rt := <- responseTime
+		reqErr := <- err
 
 		fmt.Println(
-			"https://gitlab.com request response time = ", responseTime)
+			"https://gitlab.com request response time = ", rt)
+		fmt.Print("Error: ", reqErr)
 		fmt.Println()
 
 		requestCount++
+	}
+}
+
+func makeRequests(responseTime chan float64, err chan error) {
+	rt, reqErr := clients.GetGitlabRequestResponseTime()
+	if reqErr != nil {
+		responseTime <- -1
+		err <- reqErr
+	} else {
+		responseTime <- rt
+		err <- nil
 	}
 }
