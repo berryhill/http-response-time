@@ -26,7 +26,8 @@ $ dep ensure
 
 ```
 $ cd $GOPATH/src/github/berryhill/http-response-time
-$ go run main.go
+$ go build
+$ ./http-response-time
 ```
 
 #### Containerized build via docker-compose

@@ -2,18 +2,16 @@ package clients
 
 import (
 	"net/http"
-	"fmt"
 )
 
 func makeHttpRequest(url string) (*http.Response, error) {
 
-	var client http.Client
-	resp, err := client.Get(url)
+	req, _ := http.NewRequest("GET", url, nil)
+	resp, err := http.DefaultTransport.RoundTrip(req)
+	defer resp.Body.Close()
 	if err != nil {
 		return nil, err
 	}
-
-	fmt.Println(resp.StatusCode)
 
 	return resp, nil
 }
