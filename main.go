@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+	_ "net/http/pprof"
 	"os"
 	"time"
 
@@ -9,6 +11,8 @@ import (
 )
 
 func main() {
+
+	go http.ListenAndServe(":8765", nil)
 
 	fmt.Println("Welcome to the HTTP Response Time App")
 	fmt.Println()
